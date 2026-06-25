@@ -1,3 +1,108 @@
+local API_URL = "http://13.215.254.31:28207/validate?key="
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui")
+gui.Name = "NYXKeySystem"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 400, 0, 220)
+frame.Position = UDim2.new(0.5, -200, 0.5, -110)
+frame.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+frame.BorderSizePixel = 0
+frame.Parent = gui
+
+Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 50)
+title.BackgroundColor3 = Color3.fromRGB(150, 0, 255)
+title.Text = "?? NYX SCRIPTS"
+title.TextColor3 = Color3.new(1,1,1)
+title.TextScaled = true
+title.Font = Enum.Font.GothamBold
+title.Parent = frame
+Instance.new("UICorner", title).CornerRadius = UDim.new(0, 12)
+
+local sub = Instance.new("TextLabel")
+sub.Size = UDim2.new(1, 0, 0, 30)
+sub.Position = UDim2.new(0, 0, 0, 55)
+sub.BackgroundTransparency = 1
+sub.Text = "Enter your key to continue"
+sub.TextColor3 = Color3.fromRGB(180, 180, 180)
+sub.TextScaled = true
+sub.Font = Enum.Font.Gotham
+sub.Parent = frame
+
+local input = Instance.new("TextBox")
+input.Size = UDim2.new(0.85, 0, 0, 40)
+input.Position = UDim2.new(0.075, 0, 0, 95)
+input.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+input.Text = ""
+input.PlaceholderText = "NYX-XXXXXXXXXXXXXXXX"
+input.TextColor3 = Color3.new(1,1,1)
+input.TextScaled = true
+input.Font = Enum.Font.Code
+input.ClearTextOnFocus = false
+input.Parent = frame
+Instance.new("UICorner", input).CornerRadius = UDim.new(0, 8)
+
+local status = Instance.new("TextLabel")
+status.Size = UDim2.new(1, 0, 0, 25)
+status.Position = UDim2.new(0, 0, 0, 143)
+status.BackgroundTransparency = 1
+status.Text = "?? Get your key in our Discord!"
+status.TextColor3 = Color3.fromRGB(150, 150, 150)
+status.TextScaled = true
+status.Font = Enum.Font.Gotham
+status.Parent = frame
+
+local submitBtn = Instance.new("TextButton")
+submitBtn.Size = UDim2.new(0.85, 0, 0, 40)
+submitBtn.Position = UDim2.new(0.075, 0, 0, 168)
+submitBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 255)
+submitBtn.Text = "UNLOCK"
+submitBtn.TextColor3 = Color3.new(1,1,1)
+submitBtn.TextScaled = true
+submitBtn.Font = Enum.Font.GothamBold
+submitBtn.Parent = frame
+Instance.new("UICorner", submitBtn).CornerRadius = UDim.new(0, 8)
+
+local unlocked = false
+submitBtn.MouseButton1Click:Connect(function()
+    if unlocked then return end
+    local key = input.Text
+    if key == "" then
+        status.Text = "? Please enter a key!"
+        status.TextColor3 = Color3.fromRGB(255, 80, 80)
+        return
+    end
+    status.Text = "? Validating..."
+    status.TextColor3 = Color3.fromRGB(255, 200, 0)
+    local success, result = pcall(function()
+        return game:HttpGet(API_URL .. key)
+    end)
+    if success then
+        local data = game:GetService("HttpService"):JSONDecode(result)
+        if data.valid then
+            unlocked = true
+            status.Text = "? Valid! Loading script..."
+            status.TextColor3 = Color3.fromRGB(0, 255, 100)
+            wait(1)
+            gui:Destroy()
+            LOADSCRIPT()
+        else
+            status.Text = "? Invalid key! Get one in Discord"
+            status.TextColor3 = Color3.fromRGB(255, 80, 80)
+            input.Text = ""
+        end
+    else
+        status.Text = "? Connection failed!"
+        status.TextColor3 = Color3.fromRGB(255, 80, 80)
+    end
+end)
+
+function LOADSCRIPT()
 -- UGC Aimbot + FOV + ESP (Torso + Prediction + Anti-Kick) - FIXED X
 -- Paste as LocalScript in StarterPlayerScripts
 
@@ -283,3 +388,4 @@ connections.esp = rs.RenderStepped:Connect(function()
 end)
 
 print("UGC Aimbot (Torso + Prediction) loaded. Hold RIGHT CLICK. X fully destroys everything.")
+end
