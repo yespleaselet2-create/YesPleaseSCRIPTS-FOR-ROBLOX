@@ -28,7 +28,7 @@ local function hasMouseMove()
     return type(mousemoverel) == "function"
 end
 local function hasHttp()
-    return pcall(function() safeHttp("http://radoslavgeme.duckdns.org:28207") end)
+    return pcall(function() safeHttp("http://51.91.165.211:5000") end)
 end
 
 local drawing = hasDrawing()
