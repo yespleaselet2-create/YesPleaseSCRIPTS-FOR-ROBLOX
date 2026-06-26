@@ -6,7 +6,7 @@ local camera = workspace.CurrentCamera
 local RS = game:GetService("RunService")
 local TS = game:GetService("TweenService")
 
-local API_URL = "http://radoslavgeme.duckdns.org:28207/validate?key="
+local API_URL = "http://51.91.165.211:5000/validate?key="
 local DISCORD = "https://discord.gg/5jG3FWYjXj"
 
 local function safeHttp(url)
@@ -323,7 +323,7 @@ local function buildMainGui(data, mobile)
     minBtn.Size = UDim2.new(0,32,0,28)
     minBtn.Position = UDim2.new(1,-74,0,8)
     minBtn.BackgroundColor3 = Color3.fromRGB(50,50,65)
-    minBtn.Text = "—"
+    minBtn.Text = " "
     minBtn.TextColor3 = Color3.new(1,1,1)
     minBtn.TextSize = 16
     minBtn.Font = Enum.Font.GothamBold
